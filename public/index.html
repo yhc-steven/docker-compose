@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://cdn.bootcdn.net/ajax/libs/pixi.js/5.2.3/pixi.min.js"></script>
+    <script type="text/javascript">
+        //Aliases
+            let Application = PIXI.Application,
+                loader = PIXI.loader,
+                resources = PIXI.loader.resources,
+                Sprite = PIXI.Sprite;
+            //Create a Pixi Application
+            let app = new Application({
+                width: 1000,
+                height: 1000,
+                antialias: true,
+                transparent: false,
+                resolution: 1
+            }
+            );
+            //Add the canvas that Pixi automatically created for you to the HTML document
+            document.body.appendChild(app.view);
+            //load an image and run the `setup` function when it's done
+            loader
+                .add(["./images/1.png","./images/2.png","./images/3.png"])
+                .on("progress", loadProgressHandler)
+                .load(setup);
+            function loadProgressHandler(loader, resource) {
+                    //Display the file `url` currently being loaded
+                    console.log("loading: " + resource.url);
+                    //Display the percentage of files currently loaded
+                    console.log("progress: " + loader.progress + "%");
+                    //If you gave your files names as the first argument
+                    //of the `add` method, you can access them like this
+                    //console.log("loading: " + resource.name);
+                }
+            //This `setup` function will run when the image has loaded
+            function setup() {
+                //Create the cat sprite
+                let cat = new Sprite(resources["./images/1.png"].texture);
+                cat.x=10
+                cat.y=128
+                cat.scale.set(0.1, 0.1);//缩放大小
+                //Add the cat to the stage
+                cat.rotation = 0.5;//选转角度
+                cat.anchor.set(0.5,0.5);//改变中心原点
+                // cat.pivot.set(32, 32);
+                app.ticker.add(delta => gameLoop(delta));
+
+                function gameLoop(delta) {
+                    //Move the cat 1 pixel
+                    cat.x += 1;
+                }
+                app.stage.addChild(cat);
+            }
+            const ws = new WebSocket('ws://127.0.0.1:4000/index/echo')
+            ws.onopen = e => {
+                console.log(`WebSocket 连接状态： ${ws.readyState}`)
+                ws.send("success");
+            }
+            ws.onmessage = function (msg) {
+                    console.log(msg, '----')
+            } 
+    </script>
+</body>
+
+</html>
