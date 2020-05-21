@@ -5,12 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        canvas{
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 
 <body>
+    <button type="button" onclick="wsavc.playStream()">Start Video</button>
+    <button type="button" onclick="wsavc.stopStream()">Stop Video</button>
+    <button type="button" onclick="wsavc.disconnect()">Disconnect</button>
+    <br />
+    <canvas id="canvas" width="864" height="480"></canvas>
     <script src="https://cdn.bootcdn.net/ajax/libs/pixi.js/5.2.3/pixi.min.js"></script>
+    <script src="./http-live-player.js"></script>
     <script type="text/javascript">
-        //Aliases
+        const canvas = document.getElementById("canvas");
+        var uri = "ws://" + document.location.host + "/video";
+        var wsavc = new WSAvcPlayer(canvas, "webgl", 1, 35);
+        wsavc.connect(uri);
+        //expose instance for button callbacks
+        window.wsavc = wsavc;
+        /**
             let Application = PIXI.Application,
                 loader = PIXI.loader,
                 resources = PIXI.loader.resources,
@@ -66,7 +84,19 @@
             }
             ws.onmessage = function (msg) {
                     console.log(msg, '----')
-            } 
+            }
+            function coolModule(){
+                var something = [1,2];
+                var a = 1,b=1
+                function pushSomeThing (a){
+                    something.push(a)
+                    console.log('a',a);
+                }
+                function logsomething(){
+                    console.log(a);
+                }
+            }**/
+
     </script>
 </body>
 
