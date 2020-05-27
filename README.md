@@ -3,3 +3,4 @@
 # 和docker-compose中的environment
 # 实现了websocket的分包路由中加载
 # pixi 简单的了解
+# ffmpeg实现，但是ffmpag不能stdin和stdout同时为stream

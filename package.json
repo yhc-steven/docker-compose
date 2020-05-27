@@ -1,21 +1,32 @@
 {
-  "name": "myapp",
-  "version": "0.0.0",
-  "private": true,
+  "name": "chatbot-template",
+  "version": "1.0.0",
+  "description": "Boiler-plate for fb chatbot using node+express+vue",
+  "main": "app.js",
   "scripts": {
-    "start": "node ./app"
+    "install-all": "npm --prefix ./web install ./web && npm install",
+    "build": "node web/build/build.js",
+    "start": "node bin/server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abalita/chatbot-template.git"
+  },
+  "author": "Ariel Balita",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abalita/chatbot-template/issues"
+  },
+  "homepage": "https://github.com/abalita/chatbot-template#readme",
   "dependencies": {
-    "child_process": "^1.0.2",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "express-ws": "^4.0.0",
-    "fluent-ffmpeg": "^2.1.2",
-    "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
-    "morgan": "~1.9.1",
-    "stream-split": "^1.1.0",
-    "websocket-stream": "^5.5.2"
+    "async": "^2.6.0",
+    "axios": "^0.19.2",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongodb": "^2.2.33",
+    "mongoose": "^4.13.10",
+    "morgan": "^1.9.0",
+    "request": "^2.85.0"
   }
 }

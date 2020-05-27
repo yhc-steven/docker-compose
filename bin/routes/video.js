@@ -2,11 +2,13 @@ var express = require('express');
 var child_process = require('child_process');
 var router = express.Router();
 var expressWs = require('express-ws');
-//ffmepg demo stream
+var fs = require('fs');
 var stream = require('stream');
+var path = require('path');
 var ffmpeg = require('fluent-ffmpeg');
 const Splitter = require("stream-split");
 const websocketStream = require('websocket-stream/stream');
+const { fstat } = require('fs');
 expressWs(router);
 router.get('/', function (req, res, next) {
     console.log(444);
@@ -22,34 +24,44 @@ router.ws('/', function (ws, req) {
                 height: 480,
             })
         );
-        let match;
+
+        var input_file = fs.createReadStream('./trailer.mp4');
+        input_file.on('error', function (err) {
+            console.log(err);
+        });
+        // var ffmpeg = child_process.spawn('ffmpeg', [
+        //     '-i', 'pipe:0',
+        //     "-framerate", 30,
+        //     "-video_size", '1280x720',
+        //     '-pix_fmt', 'yuv420p',
+        //     '-c:v', 'libx264',
+        //     '-b:v', '100000',
+        //     '-bufsize', '100000',
+        //     '-vprofile', 'baseline',
+        //     '-tune', 'zerolatency',
+        //     '-f', 'rawvideo', 
+        //     '-movflags', 'frag_keyframe', 
+        //     'pipe:1']);
+        
         // Launch FFmpeg to handle all appropriate transcoding, muxing, and RTMP
         const ffmpeg = child_process.spawn('ffmpeg', [
-            '-i', './output.mp4',
-            "-framerate", 15,
+            // '-i', './output.mp4',
+            // '-i', 'pipe:0',
+            '-i', '-',
+            '-y',
+            '-f', 'mp4',
+            "-framerate", 30,
             "-video_size", '1280x720',
             '-pix_fmt', 'yuv420p',
             '-c:v', 'libx264',
-            '-b:v', '800k',
-            '-bufsize', '800k',
+            '-b:v', '100000',
+            '-bufsize', '100000',
             '-vprofile', 'baseline',
-            '-vlevel','4.0',
             '-tune', 'zerolatency',
             '-f', 'rawvideo',
             '-y', 'pipe:1'
         ]);
-        // "-i", "video=Integrated Webcam",
-        //     "-framerate", this.options.fps,
-        //     "-video_size", this.options.width + 'x' + this.options.height,
-        //     '-pix_fmt', 'yuv420p',
-        //     '-c:v', 'libx264',
-        //     '-b:v', '600k',
-        //     '-bufsize', '600k',
-        //     '-vprofile', 'baseline',
-        //     '-tune', 'zerolatency',
-        //     '-f', 'rawvideo',
-        //     '-'
-        // If FFmpeg stops for any reason, close the WebSocket connection.
+        input_file.pipe(ffmpeg.stdin);
         ffmpeg.on('close', (code, signal) => {
             console.log('FFmpeg child process closed, code ' + code + ', signal ' + signal);
             ws.terminate();
@@ -73,16 +85,17 @@ router.ws('/', function (ws, req) {
             })
         ).pipe(webStream);
         // FFmpeg outputs all of its messages to STDERR.  Let's log them to the console.
+        
         ffmpeg.stderr.on('data', (data) => {
             console.log('FFmpeg STDERR:', data.toString());
         });
-
+        
         // When data comes in from the WebSocket, write it to FFmpeg's STDIN.
         ws.on('message', (msg) => {
             console.log('DATA', msg);
             // ffmpeg.stdin.write(msg);
         });
-
+        fs.createReadStream(path.join(__dirname, '../output.mp4')).pipe(ffmpeg.stdin, { end: false })
         // If the client disconnects, stop FFmpeg.
         ws.on('close', (e) => {
             ffmpeg.kill('SIGINT');

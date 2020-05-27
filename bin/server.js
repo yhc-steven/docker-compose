@@ -4,14 +4,15 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('myapp:server');
+var app = require('./app');
+var debug = require('debug')('mean-app:server');
 var http = require('http');
+
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '4001');
+var port = normalizePort(process.env.PORT || '8008');
 app.set('port', port);
 
 /**
@@ -24,9 +25,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port,()=>{
-  console.log( `启动成功Port：${port}`);
-});
+server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -88,4 +87,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
 }
