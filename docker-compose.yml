@@ -1,18 +1,16 @@
 version: '3'
 services:
-  server:
-    build:
-        context: .
-        dockerfile: Dockerfile
-    ports:
-      - "4000:4000"
-    environment:
-      FLASK_ENV: development
   web:
     build:
-        context: .
+        context: ./web
         dockerfile: Dockerfile
     ports:
-      - "4000:4000"
+      - "32769:8080"
+    networks:
+      - "envoymesh"
     environment:
       FLASK_ENV: development
+    restart: always
+    container_name: web_demo
+networks:
+  envoymesh: {}

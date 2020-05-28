@@ -4,9 +4,7 @@
   "description": "Boiler-plate for fb chatbot using node+express+vue",
   "main": "app.js",
   "scripts": {
-    "install-all": "npm --prefix ./web install ./web && npm install",
-    "build": "node web/build/build.js",
-    "start": "node bin/server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
