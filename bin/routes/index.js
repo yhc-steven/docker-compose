@@ -4,7 +4,9 @@ var expressWs = require('express-ws');
 expressWs(router);
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.json({
+    message:true
+  })
 });
 router.ws('/echo',function(ws,req){
   ws.on('message',function(msg){

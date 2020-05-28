@@ -12,5 +12,17 @@ services:
       FLASK_ENV: development
     restart: always
     container_name: web_demo
+  server:
+    build:
+        context: ./bin
+        dockerfile: Dockerfile
+    ports:
+      - "32770:4001"
+    networks:
+      - "envoymesh"
+    environment:
+      FLASK_ENV: development
+    restart: always
+    container_name: bin_demo
 networks:
   envoymesh: {}

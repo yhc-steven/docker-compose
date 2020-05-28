@@ -7,11 +7,14 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-
+import axios from "axios";
 export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  created:()=>{
+    axios.get("http://localhost:4001/index")
   }
 }
 </script>

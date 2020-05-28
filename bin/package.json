@@ -4,7 +4,7 @@
   "description": "Boiler-plate for fb chatbot using node+express+vue",
   "main": "app.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -22,9 +22,14 @@
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "mongodb": "^2.2.33",
-    "mongoose": "^4.13.10",
-    "morgan": "^1.9.0",
-    "request": "^2.85.0"
+    "express-ws": "^4.0.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs": "0.0.1-security",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7",
+    "request": "^2.85.0",
+    "stream": "0.0.2",
+    "stream-split": "^1.1.0",
+    "websocket-stream": "^5.5.2"
   }
 }
