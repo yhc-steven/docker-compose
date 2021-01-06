@@ -18,7 +18,7 @@
   "homepage": "https://github.com/abalita/chatbot-template#readme",
   "dependencies": {
     "async": "^2.6.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
